@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tipocambio.dto.Message;
-import com.tipocambio.security.jwt.JWTUtil;
-import com.tipocambio.security.jwt.PBKDF2Encoder;
 
 /**
  *

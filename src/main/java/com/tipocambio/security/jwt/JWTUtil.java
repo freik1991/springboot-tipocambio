@@ -1,20 +1,23 @@
 package com.tipocambio.security.jwt;
 
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.tipocambio.bean.Usuario;
+import com.tipocambio.security.enums.Role;
 
 /**
  *
@@ -55,18 +58,25 @@ public class JWTUtil {
 
 	public String generateToken(Usuario user) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", user.getRoles());
+		claims.put("role", Arrays.asList(user.getRoles()) );
+		System.out.println("tokken:"+doGenerateToken(claims, user.getUsername()));
 		return doGenerateToken(claims, user.getUsername());
 	}
 
-	private String doGenerateToken(Map<String, Object> claims, String username) {
-		Long expirationTimeLong = Long.parseLong(expirationTime); // in second
+	public String doGenerateToken(Map<String, Object> claims, String username) {
+		try {
+			Long expirationTimeLong = Long.parseLong(expirationTime); // in second
 
-		final Date createdDate = new Date();
-		final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);
-
-		return Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(createdDate)
-				.setExpiration(expirationDate).signWith(key).compact();
+			final Date createdDate = new Date();
+			final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);
+            System.out.println("token:"+Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(createdDate)
+					.setExpiration(expirationDate).signWith(key).compact());
+			return Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(createdDate)
+					.setExpiration(expirationDate).signWith(key).compact();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 
 	public Boolean validateToken(String token) {

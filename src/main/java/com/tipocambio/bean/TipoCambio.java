@@ -2,21 +2,24 @@ package com.tipocambio.bean;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Table("TIPOCAMBIO")
+@Entity
+@Table(name = "TIPOCAMBIO")
 @Getter
 @Setter
 @AllArgsConstructor
 public class TipoCambio {
 	
 	@Id
-	private long id;
+	@Column
+	private int id;
 	private double monto;
 	private double tipo_cambio;
 	private String moneda_origen;
@@ -26,10 +29,11 @@ public class TipoCambio {
 	private String fecha_creacion;
 	private String usuario_modificacion;
 	private String fecha_modificacion;
-	public long getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public double getMonto() {
